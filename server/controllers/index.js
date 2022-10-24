@@ -89,7 +89,7 @@ const hostPage4 = async (req, res) => {
   try {
     const docs = await Dog.find({}).lean().exec();
 
-    res.render('page4', { dogs: docs });
+    return res.render('page4', { dogs: docs });
   } catch (e) {
     console.log(e);
     return res.status(500).json({ error: 'failed to find dogs' });
@@ -161,7 +161,6 @@ const setName = async (req, res) => {
 };
 
 const setDogName = async (req, res) => {
-
   if (!req.body.name || !req.body.breed || !req.body.age) {
     // If they are missing data, send back an error.
     return res.status(400).json({ error: 'name, breed and age are all required' });
@@ -176,7 +175,6 @@ const setDogName = async (req, res) => {
   const newDog = new Dog(dogData);
 
   try {
-
     await newDog.save();
 
     lastAdded = newDog;
@@ -186,7 +184,6 @@ const setDogName = async (req, res) => {
       age: lastAdded.age,
     });
   } catch (err) {
-
     console.log(err);
     return res.status(500).json({ error: 'failed to create dog' });
   }
@@ -210,16 +207,6 @@ const searchName = async (req, res) => {
      try/catch in case the database throws an error or doesn't respond.
   */
   try {
-    /* Just like Cat.find() in hostPage1() above, Mongoose models also have a .findOne()
-       that will find a single document in the database that matches the search parameters.
-       This function is faster, as it will stop searching after it finds one document that
-       matches the parameters. The downside is you cannot get multiple responses with it.
-
-       One of three things will occur when trying to findOne in the database.
-        1) An error will be thrown, which will stop execution of the try block and move to the catch block.
-        2) Everything works, but the name was not found in the database returning an empty doc object.
-        3) Everything works, and an object matching the search is found.
-    */
     const doc = await Cat.findOne({ name: req.query.name }).exec();
 
     // If we do not find something that matches our search, doc will be empty.
@@ -241,7 +228,6 @@ const searchDogName = async (req, res) => {
     return res.status(400).json({ error: 'Name is required to perform a search' });
   }
 
-
   try {
     const doc = await Dog.findOne({ name: req.query.name }).exec();
 
@@ -249,12 +235,11 @@ const searchDogName = async (req, res) => {
       return res.json({ error: 'No dogs found' });
     }
 
-
-    //increment the age of this lil dude
+    // increment the age of this lil dude
     doc.age++;
     await doc.save();
 
-    //then return 'em!
+    // then return 'em!
     return res.json({ name: doc.name, breed: doc.breed, age: doc.age });
   } catch (err) {
     console.log(err);
