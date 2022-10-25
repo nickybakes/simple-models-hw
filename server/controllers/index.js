@@ -224,12 +224,12 @@ const searchName = async (req, res) => {
 };
 
 const searchDogName = async (req, res) => {
-  if (!req.query.name) {
+  if (!req.body.name) {
     return res.status(400).json({ error: 'Name is required to perform a search' });
   }
 
   try {
-    const doc = await Dog.findOne({ name: req.query.name }).exec();
+    const doc = await Dog.findOne({ name: req.body.name }).exec();
 
     if (!doc) {
       return res.json({ error: 'No dogs found' });

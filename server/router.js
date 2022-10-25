@@ -19,7 +19,8 @@ const router = (app) => {
   app.get('/page4', controllers.page4);
   app.get('/getName', controllers.getName);
   app.get('/findByName', controllers.searchName);
-  app.get('/searchDogName', controllers.searchDogName);
+  // this is a post request because it updates data in the database
+  app.post('/searchDogName', controllers.searchDogName);
 
   // whenever someone goes to the site without a path (AKA the home page), call controllers.index
   // For example www.webpage.com
